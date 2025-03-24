@@ -54,7 +54,7 @@ if st.button("Run Query"):
             if isinstance(result, str):
                 st.error(f"Error: {result}")
             else:
-                st.error(f"Query execution plan shows bytesAssigned is {result} bytes, which exceeds {data_size_limt} MB. Query is not allowed.")
+                st.error(f"Query execution plan shows bytesAssigned is {result} bytes, which exceeds {data_size_limt} bytes. Query is not allowed.")
         else:
             # Step 2: If the plan is valid, run the query
             try:
