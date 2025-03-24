@@ -9,6 +9,8 @@ import json
 # Get the current credentials
 session = get_active_session()
 
+data_size_limt=102400000
+
 warehouse_sql = f"USE WAREHOUSE BI_WH"
 session.sql(warehouse_sql).collect()
 
@@ -35,7 +37,7 @@ def validate_query(sql_query):
         bytes_assigned = explain_json.get("GlobalStats", {}).get("bytesAssigned", 0)
 
         # Check if bytesAssigned exceeds 10MB (10240 bytes)
-        if bytes_assigned > 102400000:  # 10MB
+        if bytes_assigned > data_size_limt:  # 100MB
             return False, bytes_assigned
         else:
             return True, bytes_assigned
@@ -52,7 +54,7 @@ if st.button("Run Query"):
             if isinstance(result, str):
                 st.error(f"Error: {result}")
             else:
-                st.error(f"Query execution plan shows bytesAssigned is {result} bytes, which exceeds 100MB. Query is not allowed.")
+                st.error(f"Query execution plan shows bytesAssigned is {result} bytes, which exceeds {data_size_limt} MB. Query is not allowed.")
         else:
             # Step 2: If the plan is valid, run the query
             try:
